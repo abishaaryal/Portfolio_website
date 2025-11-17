@@ -632,7 +632,7 @@ section {
 .gallery-track {
     display: flex;
     gap: 3rem;
-    animation: scroll 40s linear infinite;
+    animation: scroll 43s linear infinite;
     width: fit-content;
 }
 

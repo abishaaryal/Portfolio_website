@@ -70,6 +70,29 @@ if (galleryTrack) {
         const clone = item.cloneNode(true);
         galleryTrack.appendChild(clone);
     });
+
+    // Remove any gallery items whose images fail to load
+    const removeBroken = (img) => {
+        const item = img.closest('.gallery-item');
+        if (item && item.parentElement) {
+            item.parentElement.removeChild(item);
+        }
+    };
+
+    const checkAndHookBrokenImages = () => {
+        const imgs = galleryTrack.querySelectorAll('.gallery-item img');
+        imgs.forEach((img) => {
+            // If already finished loading but failed, remove immediately
+            if (img.complete && typeof img.naturalWidth !== 'undefined' && img.naturalWidth === 0) {
+                removeBroken(img);
+                return;
+            }
+            // Otherwise, listen for load errors
+            img.addEventListener('error', () => removeBroken(img), { once: true });
+        });
+    };
+
+    checkAndHookBrokenImages();
 }
 
 // Optional: Add hover effects to interactive elements
